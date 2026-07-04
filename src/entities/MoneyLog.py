@@ -17,13 +17,13 @@ class MoneyLog(Base):
 
     user = relationship("User", back_populates="money_logs")
 
-    bank_id = Column(UUID(as_uuid=True), ForeignKey("banks.id"), nullable=True)
+    bank_id = Column(UUID(as_uuid=True), nullable=True)
 
-    bank_box_id = Column(UUID(as_uuid=True), ForeignKey("bank_boxes.id"), nullable=True)
+    bank_box_id = Column(UUID(as_uuid=True), nullable=True)
 
-    cash_id = Column(UUID(as_uuid=True), ForeignKey("cashes.id"), nullable=True)
+    cash_id = Column(UUID(as_uuid=True), nullable=True)
 
-    invoice_id = Column(UUID(as_uuid=True), ForeignKey("invoices.id"), nullable=True)
+    invoice_id = Column(UUID(as_uuid=True), nullable=True)
 
     type_opp = Column(Enum(MoneyType), nullable=False)
 
