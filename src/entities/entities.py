@@ -175,8 +175,8 @@ class Invoice(Base):
 
     name: Mapped[str] = mapped_column(String(32), nullable=False)
     description: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    installments: Mapped[int | None] = mapped_column(Integer, nullable=True, default=1)
-    installs_paid: Mapped[int | None] = mapped_column(Integer, nullable=True, default=0)
+    installments: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    installs_paid: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     total_amount: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
     due_date: Mapped[date] = mapped_column(Date, nullable=False)
