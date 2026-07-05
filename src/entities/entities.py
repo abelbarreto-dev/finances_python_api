@@ -16,6 +16,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+from src.utils.gender_enum import GenderType
 from src.utils.invoice_enum import InvoiceStatus, InvoiceType
 from src.utils.money_enum import MoneyMethod, MoneyType
 from src.utils.pix_enum import PixType
@@ -33,8 +34,11 @@ class User(Base):
     )
 
     full_name: Mapped[str] = mapped_column(String(64), nullable=False)
-    email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
-    username: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    date_born: Mapped[date] = mapped_column(Date, nullable=False)
+    gender: Mapped[GenderType] = mapped_column(Enum(GenderType), nullable=False)
+    cpf: Mapped[str] = mapped_column(String(15), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    username: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     phone: Mapped[str | None] = mapped_column(String(20), nullable=True)
 
@@ -258,7 +262,7 @@ class LoginHistory(Base):
 
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     login_time: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.now()
+        DateTime(timezone=True), server_default=func.now()
     )
     logout_time: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 

@@ -7,6 +7,10 @@
   "author": "Abel Carvalho <abelbcarvalho.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "migrate:gen": "alembic revision --autogenerate -m "
+    "migrate:base": "alembic downgrade base",
+    "migrate:gen": "alembic revision --autogenerate -m ",
+    "migrate:run": "alembic upgrade head",
+    "migrate:revert": "alembic downgrade -1",
+    "migrate:info": "alembic current"
   }
 }
