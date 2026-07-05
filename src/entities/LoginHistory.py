@@ -18,9 +18,7 @@ class LoginHistory(Base):
     login_time: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=datetime.now()
     )
-    logout_time: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    logout_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), nullable=False
