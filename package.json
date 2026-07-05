@@ -1,0 +1,12 @@
+{
+  "name": "finances_python_api",
+  "version": "1.0.0",
+  "description": "finances api using python",
+  "main": "app.py",
+  "repository": "git@github.com:abelbarreto-dev/finances_python_api.git",
+  "author": "Abel Carvalho <abelbcarvalho.dev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "migrate:gen": "alembic revision --autogenerate -m "
+  }
+}
