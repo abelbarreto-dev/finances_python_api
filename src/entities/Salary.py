@@ -1,15 +1,15 @@
 import uuid
 from datetime import datetime
 from decimal import Decimal
-from unittest.mock import Base
 
-from sqlalchemy import DateTime, ForeignKey, Numeric, String, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import UUID, DateTime, ForeignKey, Numeric, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src.entities.__base__ import Base
 
-class Cash(Base):
-    __tablename__ = "cashes"
+
+class Salary(Base):
+    __tablename__ = "salary"
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
@@ -18,11 +18,14 @@ class Cash(Base):
         UUID(as_uuid=True), ForeignKey("users.id"), nullable=False
     )
 
-    user = relationship("User", back_populates="cashes")
+    user = relationship("User", back_populates="salary")
 
-    tag: Mapped[str] = mapped_column(String(32), nullable=False)
-    description: Mapped[str] = mapped_column(String(128), nullable=True)
-    balance: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=0)
+    company: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    occupation: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    salary: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
+    activated_at: Mapped[datetime | None] = mapped_column(
+        DateTime, nullable=True, default=datetime.now
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), nullable=False
