@@ -13,7 +13,6 @@ class SalaryInputCreate(BaseModel):
     company: Optional[str] = CreateValidator.salary_company
     occupation: Optional[str] = CreateValidator.salary_occupation
     salary: Optional[Decimal] = None
-    activated_at: Optional[datetime] = None
 
 
 class ListSalaryInput(BaseModel):
@@ -29,4 +28,3 @@ class SalaryInputUpdate(BaseModel):
     company: Optional[str] = UpdateValidator.salary_company
     occupation: Optional[str] = UpdateValidator.salary_occupation
     salary: Optional[Decimal] = None
-    activated_at: Optional[datetime] = None
