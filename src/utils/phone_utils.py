@@ -1,7 +1,7 @@
 from re import compile
 
 
-def is_phone(value: str) -> bool:
+def is_phone_validator(value: str) -> bool:
     regex = compile(r"^\+[0-9]{12,13}$")
 
     checker = regex.match(value) is not None

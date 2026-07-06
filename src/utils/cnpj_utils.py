@@ -62,7 +62,7 @@ def gen_invalid_cnpj(is_alpha: bool = False):
 
     cnpj = "".join(choice(values) for i in range(14))
 
-    if is_cnpj(cnpj):
+    if is_cnpj_validator(cnpj):
         return gen_valid_cnpj(is_alpha)
 
     return cnpj
@@ -82,7 +82,7 @@ def validate_cnpj(value: str) -> bool:
     return cnpj == value
 
 
-def is_cnpj(value: str):
+def is_cnpj_validator(value: str):
     regex = compile(r"^[0-9A-Z]{14}$")
 
     if regex.match(value) is None:

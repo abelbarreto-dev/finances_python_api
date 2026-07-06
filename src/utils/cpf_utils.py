@@ -33,7 +33,7 @@ def gen_invalid_cpf() -> str:
 
     cpf = "".join(choice(numbers) for _ in range(11))
 
-    if is_cpf(cpf):
+    if is_cpf_validator(cpf):
         return gen_invalid_cpf()
 
     return cpf
@@ -44,7 +44,7 @@ def is_cpf_numeric(value: str) -> bool:
     return regex.match(value) is not None
 
 
-def is_cpf(value: str) -> bool:
+def is_cpf_validator(value: str) -> bool:
     checker = is_cpf_numeric(value)
 
     cpf = value[0:9]
