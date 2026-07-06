@@ -1,6 +1,9 @@
+from http.client import BAD_REQUEST
 from random import choice
 from re import compile
 from typing import Callable
+
+from fastapi import HTTPException
 
 
 def calc_cpf_checker(value: str):
@@ -44,7 +47,7 @@ def is_cpf_validator(nullable: bool = False) -> Callable[[str], str]:
         cpf = value[0:9]
 
         if not checker:
-            raise ValueError("cpf not matches")
+            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cpf not matches"))
 
         digit = calc_cpf_checker(cpf)
 
@@ -55,7 +58,7 @@ def is_cpf_validator(nullable: bool = False) -> Callable[[str], str]:
         checker = value[9:11] == digits
 
         if not checker:
-            raise ValueError("cpf must be valid")
+            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cpf must be valid"))
 
         return value
 

@@ -1,5 +1,8 @@
+from http.client import BAD_REQUEST
 from re import compile
 from typing import Callable
+
+from fastapi import HTTPException
 
 
 def is_phone_validator(nullable: bool = False) -> Callable[[str], str]:
@@ -12,7 +15,9 @@ def is_phone_validator(nullable: bool = False) -> Callable[[str], str]:
         checker = regex.match(value) is not None
 
         if not checker:
-            raise ValueError("phone must be valid")
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message="phone must be valid")
+            )
 
         return value
 

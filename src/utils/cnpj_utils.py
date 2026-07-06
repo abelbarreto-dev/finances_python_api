@@ -1,6 +1,9 @@
+from http.client import BAD_REQUEST
 from random import choice
 from re import compile
 from typing import Callable
+
+from fastapi import HTTPException
 
 
 def dict_values(value: str | None) -> int | dict[str, int]:
@@ -77,12 +80,14 @@ def is_cnpj_validator(nullable: bool = False) -> Callable[[str], str]:
         regex = compile(r"^[0-9A-Z]{14}$")
 
         if regex.match(value) is None:
-            raise ValueError("cnpj not matches")
+            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj not matches"))
 
         checker = validate_cnpj(value)
 
         if not checker:
-            raise ValueError("cnpj must be valid")
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message="cnpj must be valid")
+            )
 
         return value
 

@@ -1,4 +1,7 @@
+from http.client import BAD_REQUEST
 from typing import Callable
+
+from fastapi import HTTPException
 
 
 def is_string_validator(
@@ -14,10 +17,16 @@ def is_string_validator(
         len_value = len(value)
 
         if len_value < min_len:
-            raise ValueError(f"{name} length must be greater then or equals to {min_len}")
+            raise HTTPException(
+                status_code=BAD_REQUEST,
+                detail=dict(message=f"{name} length must be greater then or equals to {min_len}"),
+            )
 
         if len_value > max_len:
-            raise ValueError(f"{name} length must be less than or equals to {max_len}")
+            raise HTTPException(
+                status_code=BAD_REQUEST,
+                detail=dict(message=f"{name} length must be less than or equals to {max_len}"),
+            )
 
         return value
 
