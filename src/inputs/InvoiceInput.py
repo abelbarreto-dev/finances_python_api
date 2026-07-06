@@ -6,12 +6,13 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.utils.invoice_enum import InvoiceStatus, InvoiceType
+from src.utils.validators import CreateValidator, UpdateValidator
 
 
 class InvoiceInputCreate(BaseModel):
     user_id: uuid.UUID
-    name: str
-    description: Optional[str] = None
+    name: str = CreateValidator.invoice_name
+    description: Optional[str] = CreateValidator.invoice_description
     installments: int = 1
     installs_paid: int = 0
     amount: Decimal
@@ -24,7 +25,7 @@ class InvoiceInputCreate(BaseModel):
 class ListInvoiceInput(BaseModel):
     limit: int
     offset: int
-    name: Optional[str] = None
+    name: Optional[str] = UpdateValidator.invoice_name
     installments: Optional[int] = None
     due_date: Optional[date] = None
     invoice_type: Optional[InvoiceType] = None
@@ -33,8 +34,8 @@ class ListInvoiceInput(BaseModel):
 
 class InvoiceInputUpdate(BaseModel):
     id: uuid.UUID
-    name: Optional[str] = None
-    description: Optional[str] = None
+    name: Optional[str] = UpdateValidator.invoice_name
+    description: Optional[str] = UpdateValidator.invoice_description
     installments: Optional[int] = None
     installs_paid: Optional[int] = None
     amount: Optional[Decimal] = None
