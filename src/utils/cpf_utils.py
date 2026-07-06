@@ -1,5 +1,6 @@
 from random import choice
 from re import compile
+from typing import Callable
 
 
 def calc_cpf_checker(value: str):
@@ -28,34 +29,34 @@ def gen_valid_cpf() -> str:
     return cpf + calc_cpf_checker(cpf)
 
 
-def gen_invalid_cpf() -> str:
-    numbers = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
-
-    cpf = "".join(choice(numbers) for _ in range(11))
-
-    if is_cpf_validator(cpf):
-        return gen_invalid_cpf()
-
-    return cpf
-
-
 def is_cpf_numeric(value: str) -> bool:
     regex = compile(r"^[0-9]{11}$")
     return regex.match(value) is not None
 
 
-def is_cpf_validator(value: str) -> bool:
-    checker = is_cpf_numeric(value)
+def is_cpf_validator(nullable: bool = False) -> Callable[[str], str]:
+    def validator(value: str | None) -> str:
+        if value is None and nullable:
+            return value
 
-    cpf = value[0:9]
+        checker = is_cpf_numeric(value)
 
-    if not checker:
-        return False
+        cpf = value[0:9]
 
-    digit = calc_cpf_checker(cpf)
+        if not checker:
+            raise ValueError("cpf not matches")
 
-    cpf += digit
+        digit = calc_cpf_checker(cpf)
 
-    digits = digit + calc_cpf_checker(cpf)
+        cpf += digit
 
-    return value[9:11] == digits
+        digits = digit + calc_cpf_checker(cpf)
+
+        checker = value[9:11] == digits
+
+        if not checker:
+            raise ValueError("cpf must be valid")
+
+        return value
+
+    return validator

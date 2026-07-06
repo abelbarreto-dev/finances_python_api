@@ -1,5 +1,6 @@
 from random import choice
 from re import compile
+from typing import Callable
 
 
 def dict_values(value: str | None) -> int | dict[str, int]:
@@ -54,20 +55,6 @@ def gen_valid_cnpj(is_alpha: bool = False):
     return cnpj + digit
 
 
-def gen_invalid_cnpj(is_alpha: bool = False):
-    values: tuple[str] = tuple(dict_values(None).keys())
-
-    if not is_alpha:
-        values = tuple(i for i in values if i.isnumeric())
-
-    cnpj = "".join(choice(values) for i in range(14))
-
-    if is_cnpj_validator(cnpj):
-        return gen_valid_cnpj(is_alpha)
-
-    return cnpj
-
-
 def validate_cnpj(value: str) -> bool:
     cnpj = value[0:12]
 
@@ -82,10 +69,21 @@ def validate_cnpj(value: str) -> bool:
     return cnpj == value
 
 
-def is_cnpj_validator(value: str):
-    regex = compile(r"^[0-9A-Z]{14}$")
+def is_cnpj_validator(nullable: bool = False) -> Callable[[str], str]:
+    def validator(value: str | None) -> str:
+        if value is None and nullable:
+            return value
 
-    if regex.match(value) is None:
-        return False
+        regex = compile(r"^[0-9A-Z]{14}$")
 
-    return validate_cnpj(value)
+        if regex.match(value) is None:
+            raise ValueError("cnpj not matches")
+
+        checker = validate_cnpj(value)
+
+        if not checker:
+            raise ValueError("cnpj must be valid")
+
+        return value
+
+    return validator

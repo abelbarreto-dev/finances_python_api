@@ -1,9 +1,19 @@
 from re import compile
+from typing import Callable
 
 
-def is_phone_validator(value: str) -> bool:
-    regex = compile(r"^\+[0-9]{12,13}$")
+def is_phone_validator(nullable: bool = False) -> Callable[[str], str]:
+    def validator(value: str) -> str:
+        if value is None and nullable:
+            return value
 
-    checker = regex.match(value) is not None
+        regex = compile(r"^\+[0-9]{12,13}$")
 
-    return checker
+        checker = regex.match(value) is not None
+
+        if not checker:
+            raise ValueError("phone must be valid")
+
+        return value
+
+    return validator
