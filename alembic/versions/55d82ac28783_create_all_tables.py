@@ -65,7 +65,7 @@ def upgrade() -> None:
         sa.Column("user_id", sa.UUID(), nullable=False),
         sa.Column("code", sa.String(length=10), nullable=False),
         sa.Column("name", sa.String(length=64), nullable=False),
-        sa.Column("agency", sa.String(length=32), nullable=True),
+        sa.Column("agency", sa.String(length=32), nullable=False),
         sa.Column("account_number", sa.String(length=32), nullable=False),
         sa.Column("balance", sa.Numeric(precision=10, scale=2), nullable=False),
         sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),

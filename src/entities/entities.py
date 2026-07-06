@@ -95,7 +95,7 @@ class Bank(Base):
 
     code: Mapped[str] = mapped_column(String(10), nullable=False)
     name: Mapped[str] = mapped_column(String(64), nullable=False)
-    agency: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    agency: Mapped[str] = mapped_column(String(32), nullable=False)
     account_number: Mapped[str] = mapped_column(String(32), nullable=False)
     balance: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=0)
 
