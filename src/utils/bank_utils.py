@@ -34,7 +34,7 @@ def is_agency_validator(nullable: bool = False) -> Callable[[str], str]:
     return validator
 
 
-def is_account_number(nullable: bool = False) -> Callable[[str], str]:
+def is_account_number_validator(nullable: bool = False) -> Callable[[str], str]:
     def validator(value: str | None) -> str:
         if value is None and nullable:
             return value
