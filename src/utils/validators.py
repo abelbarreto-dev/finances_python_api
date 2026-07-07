@@ -1,7 +1,9 @@
 from dataclasses import dataclass
+from datetime import date
 from typing import Annotated
+from uuid import UUID
 
-from pydantic import AfterValidator
+from pydantic import AfterValidator, BeforeValidator
 
 from src.utils.bank_utils import (
     is_account_number_validator,
@@ -9,15 +11,21 @@ from src.utils.bank_utils import (
     is_code_validator,
 )
 from src.utils.cpf_utils import is_cpf_validator
+from src.utils.date_utils import is_date_validator
 from src.utils.email_utils import is_email_validator
+from src.utils.gender_enum import GenderType
+from src.utils.gender_utils import is_gender_validator
 from src.utils.phone_utils import is_phone_validator
 from src.utils.string_utils import is_string_validator
 from src.utils.username_utils import is_username_validator
+from src.utils.uuid_utils import is_uuid_validator
 
 
 @dataclass
 class CreateValidator:
     user_full_name = Annotated[str, AfterValidator(is_string_validator("user full_name", 2, 64))]
+    user_date_born = Annotated[date, BeforeValidator(is_date_validator("user date_born"))]
+    user_gender = Annotated[GenderType, BeforeValidator(is_gender_validator("user gender"))]
     user_cpf = Annotated[str, AfterValidator(is_cpf_validator)]
     user_email = Annotated[str, AfterValidator(is_email_validator)]
     user_username = Annotated[str, AfterValidator(is_username_validator)]
@@ -53,9 +61,12 @@ class CreateValidator:
 
 @dataclass
 class UpdateValidator:
+    user_id = Annotated[UUID, BeforeValidator(is_uuid_validator("user id"))]
     user_full_name = Annotated[
         str | None, AfterValidator(is_string_validator("user full_name", 2, 64, True))
     ]
+    user_date_born = Annotated[date, BeforeValidator(is_date_validator("user date_born", True))]
+    user_gender = Annotated[GenderType, BeforeValidator(is_gender_validator("user gender", True))]
     user_cpf = Annotated[str | None, AfterValidator(is_cpf_validator(True))]
     user_email = Annotated[str | None, AfterValidator(is_email_validator(True))]
     user_username = Annotated[str | None, AfterValidator(is_username_validator(True))]
