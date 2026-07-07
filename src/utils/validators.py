@@ -43,13 +43,12 @@ class CreateValidator:
     cash_description = Annotated[
         str | None, AfterValidator(is_string_validator("cash description", 0, 128, True))
     ]
+    cash_balance = Annotated[Decimal, AfterValidator(is_decimal_validator("cash balance"))]
     bank_code = Annotated[str, AfterValidator(is_code_validator)]
     bank_name = Annotated[str, AfterValidator(is_string_validator("bank name", 2, 64))]
     bank_agency = Annotated[str, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str, AfterValidator(is_account_number_validator)]
-    bank_balance = Annotated[
-        Decimal, AfterValidator(is_decimal_validator("bank balance"))
-    ]
+    bank_balance = Annotated[Decimal, AfterValidator(is_decimal_validator("bank balance"))]
     bank_box_tag = Annotated[str, AfterValidator(is_string_validator("bank box tag", 2, 32))]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
@@ -103,9 +102,12 @@ class UpdateValidator:
     user_phone = Annotated[str | None, AfterValidator(is_phone_validator(True))]
     cash_id = Annotated[UUID, BeforeValidator(is_uuid_validator("cash id"))]
     cash_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("cash id", True))]
-    cash_tag = Annotated[str | None, AfterValidator(is_string_validator("cash tag", 2, 32, None))]
+    cash_tag = Annotated[str | None, AfterValidator(is_string_validator("cash tag", 2, 32, True))]
     cash_description = Annotated[
         str | None, AfterValidator(is_string_validator("cash description", 0, 128, True))
+    ]
+    cash_balance = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("cash balance", True))
     ]
     bank_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id"))]
     bank_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id", True))]
@@ -116,7 +118,7 @@ class UpdateValidator:
     bank_agency = Annotated[str | None, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str | None, AfterValidator(is_account_number_validator)]
     bank_balance = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("bank balance", None))
+        Decimal | None, AfterValidator(is_decimal_validator("bank balance", True))
     ]
     bank_box_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id"))]
     bank_box_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id", True))]
