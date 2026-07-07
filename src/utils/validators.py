@@ -19,6 +19,8 @@ from src.utils.email_utils import is_email_validator
 from src.utils.gender_enum import GenderType
 from src.utils.gender_utils import is_gender_validator
 from src.utils.integer_utils import is_integer_validator
+from src.utils.money_enum import MoneyMethod, MoneyType
+from src.utils.money_utils import is_money_type_validator
 from src.utils.phone_utils import is_phone_validator
 from src.utils.pix_enum import PixType
 from src.utils.string_utils import is_string_validator
@@ -48,6 +50,13 @@ class CreateValidator:
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
     ]
+    money_log_type = Annotated[
+        MoneyType, BeforeValidator(is_money_type_validator("money log type enum"))
+    ]
+    money_log_method = Annotated[
+        MoneyMethod, BeforeValidator(is_money_type_validator("money log method enum"))
+    ]
+    money_amount = Annotated[Decimal, AfterValidator(is_decimal_validator("money amount"))]
     pix_name = Annotated[str, AfterValidator(is_string_validator("pix name", 2, 32))]
     pix_description = Annotated[
         str | None, AfterValidator(is_string_validator("pix description", 0, 128, True))
@@ -82,22 +91,39 @@ class UpdateValidator:
         str | None, AfterValidator(is_string_validator("user password", 8, 255, True))
     ]
     user_phone = Annotated[str | None, AfterValidator(is_phone_validator(True))]
+    cash_id = Annotated[UUID, BeforeValidator(is_uuid_validator("cash id"))]
+    cash_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("cash id", True))]
     cash_tag = Annotated[str | None, AfterValidator(is_string_validator("cash tag", 2, 32, None))]
     cash_description = Annotated[
         str | None, AfterValidator(is_string_validator("cash description", 0, 128, True))
     ]
     bank_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id"))]
+    bank_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id", True))]
     bank_code = Annotated[str | None, AfterValidator(is_code_validator)]
     bank_name = Annotated[
         str | None, AfterValidator(is_string_validator("bank name", 2, 64, True))
     ]
     bank_agency = Annotated[str | None, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str | None, AfterValidator(is_account_number_validator)]
+    bank_box_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id"))]
+    bank_box_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id", True))]
     bank_box_tag = Annotated[
         str | None, AfterValidator(is_string_validator("bank box tag", 2, 32, True))
     ]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
+    ]
+    money_log_id = Annotated[UUID, BeforeValidator(is_uuid_validator("money log id"))]
+    money_log_type = Annotated[
+        MoneyType | None, BeforeValidator(is_money_type_validator("money log type enum", True))
+    ]
+    money_log_method = Annotated[
+        MoneyMethod | None,
+        BeforeValidator(is_money_type_validator("money log method enum", True)),
+    ]
+    money_due_date = Annotated[date, BeforeValidator(is_date_validator("money due_date", True))]
+    money_amount = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("money amount", True))
     ]
     pix_id = Annotated[UUID, BeforeValidator(is_uuid_validator("pix id"))]
     pix_name = Annotated[str | None, AfterValidator(is_string_validator("pix name", 2, 32, True))]
@@ -110,6 +136,8 @@ class UpdateValidator:
     pix_pix_type = Annotated[
         PixType | None, BeforeValidator(is_gender_validator("pix pix_type", True))
     ]
+    invoice_id = Annotated[UUID, BeforeValidator(is_uuid_validator("invoice id"))]
+    invoice_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("invoice id", True))]
     invoice_name = Annotated[
         str | None, AfterValidator(is_string_validator("invoice name", 2, 32, True))
     ]

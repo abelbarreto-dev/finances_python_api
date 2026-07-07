@@ -18,7 +18,7 @@ class PixInputCreate(BaseModel):
 class ListPixInput(BaseModel):
     limit: int = GetValidator.limit
     offset: int = GetValidator.offset
-    bank_id: uuid.UUID = UpdateValidator.bank_id
+    bank_id: uuid.UUID = UpdateValidator.bank_filter_id
     name: Optional[str] = UpdateValidator.pix_name
     pix_type: Optional[PixType] = UpdateValidator.pix_pix_type
     is_mine: Optional[bool] = UpdateValidator.pix_is_mine
