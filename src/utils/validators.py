@@ -47,9 +47,15 @@ class CreateValidator:
     bank_name = Annotated[str, AfterValidator(is_string_validator("bank name", 2, 64))]
     bank_agency = Annotated[str, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str, AfterValidator(is_account_number_validator)]
+    bank_balance = Annotated[
+        Decimal, AfterValidator(is_decimal_validator("bank balance"))
+    ]
     bank_box_tag = Annotated[str, AfterValidator(is_string_validator("bank box tag", 2, 32))]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
+    ]
+    bank_box_balance = Annotated[
+        Decimal, AfterValidator(is_decimal_validator("bank box balance"))
     ]
     login_history_login_time = Annotated[
         datetime, BeforeValidator(is_datetime_validator("login history login time"))
@@ -109,6 +115,9 @@ class UpdateValidator:
     ]
     bank_agency = Annotated[str | None, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str | None, AfterValidator(is_account_number_validator)]
+    bank_balance = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("bank balance", None))
+    ]
     bank_box_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id"))]
     bank_box_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id", True))]
     bank_box_tag = Annotated[
@@ -116,6 +125,9 @@ class UpdateValidator:
     ]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
+    ]
+    bank_box_balance = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("bank box balance", True))
     ]
     login_history_due_date = Annotated[
         date | None, BeforeValidator(is_date_validator("login history due_date", True))
