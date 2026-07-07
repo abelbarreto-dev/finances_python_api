@@ -20,6 +20,7 @@ from src.utils.email_utils import is_email_validator
 from src.utils.gender_enum import GenderType
 from src.utils.gender_utils import is_gender_validator
 from src.utils.integer_utils import is_integer_validator
+from src.utils.invoice_enum import InvoiceStatus, InvoiceType
 from src.utils.money_enum import MoneyMethod, MoneyType
 from src.utils.money_utils import is_money_type_validator
 from src.utils.phone_utils import is_phone_validator
@@ -76,6 +77,21 @@ class CreateValidator:
     invoice_description = Annotated[
         str | None, AfterValidator(is_string_validator("invoice description", 0, 255, True))
     ]
+    invoice_due_date = Annotated[date, BeforeValidator(is_date_validator("invoice due_date"))]
+    invoice_installments = Annotated[
+        int, AfterValidator(is_integer_validator("invoice installment"))
+    ]
+    invoice_installs_paid = Annotated[
+        int, AfterValidator(is_integer_validator("invoice installs paid"))
+    ]
+    invoice_amount = Annotated[Decimal, AfterValidator(is_decimal_validator("invoice amount"))]
+    invoice_total_amount = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
+    ]
+    invoice_status = Annotated[
+        InvoiceStatus, BeforeValidator(is_gender_validator("invoice status"))
+    ]
+    invoice_type = Annotated[InvoiceType, BeforeValidator(is_gender_validator("invoice type"))]
     salary_company = Annotated[
         str | None, AfterValidator(is_string_validator("salary company", 2, 64, True))
     ]
@@ -118,7 +134,7 @@ class UpdateValidator:
     bank_agency = Annotated[str | None, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str | None, AfterValidator(is_account_number_validator)]
     bank_balance = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("bank balance", True))
+        Decimal | None, AfterValidator(is_decimal_validator("bank balance", True, True))
     ]
     bank_box_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id"))]
     bank_box_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank box id", True))]
@@ -129,7 +145,7 @@ class UpdateValidator:
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
     ]
     bank_box_balance = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("bank box balance", True))
+        Decimal | None, AfterValidator(is_decimal_validator("bank box balance", True, True))
     ]
     login_history_due_date = Annotated[
         date | None, BeforeValidator(is_date_validator("login history due_date", True))
@@ -170,6 +186,27 @@ class UpdateValidator:
     ]
     invoice_description = Annotated[
         str | None, AfterValidator(is_string_validator("invoice description", 0, 255, True))
+    ]
+    invoice_due_date = Annotated[
+        date | None, BeforeValidator(is_date_validator("invoice due_date", True))
+    ]
+    invoice_installments = Annotated[
+        int | None, AfterValidator(is_integer_validator("invoice installments", True))
+    ]
+    invoice_installs_paid = Annotated[
+        int | None, AfterValidator(is_integer_validator("invoice installs paid", True))
+    ]
+    invoice_status = Annotated[
+        InvoiceStatus | None, BeforeValidator(is_gender_validator("invoice status", True))
+    ]
+    invoice_type = Annotated[
+        InvoiceType | None, BeforeValidator(is_gender_validator("invoice type", True))
+    ]
+    invoice_amount = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
+    ]
+    invoice_total_amount = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
     ]
     salary_id = Annotated[UUID, BeforeValidator(is_uuid_validator("salary id"))]
     salary_company = Annotated[
