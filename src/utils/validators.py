@@ -123,7 +123,9 @@ class UpdateValidator:
     salary_occupation = Annotated[
         str | None, AfterValidator(is_string_validator("salary occupation", 2, 64, True))
     ]
-    salary_salary = Annotated[Decimal | None, AfterValidator(is_decimal_validator("salary", True))]
+    salary_salary = Annotated[
+        Decimal | None, AfterValidator(is_decimal_validator("salary", True))
+    ]
     salary_start_date = Annotated[date, BeforeValidator(is_date_validator("salary start_date"))]
     salary_end_date = Annotated[date, BeforeValidator(is_date_validator("salary end_date"))]
 
