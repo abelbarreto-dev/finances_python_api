@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Annotated
 from uuid import UUID
@@ -14,6 +14,7 @@ from src.utils.bank_utils import (
 from src.utils.boolean_utils import is_boolean_validator
 from src.utils.cpf_utils import is_cpf_validator
 from src.utils.date_utils import is_date_validator
+from src.utils.datetime_utils import is_datetime_validator
 from src.utils.decimal_utils import is_decimal_validator
 from src.utils.email_utils import is_email_validator
 from src.utils.gender_enum import GenderType
@@ -49,6 +50,9 @@ class CreateValidator:
     bank_box_tag = Annotated[str, AfterValidator(is_string_validator("bank box tag", 2, 32))]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
+    ]
+    login_history_login_time = Annotated[
+        datetime, BeforeValidator(is_datetime_validator("login history login time"))
     ]
     money_log_type = Annotated[
         MoneyType, BeforeValidator(is_money_type_validator("money log type enum"))
@@ -112,6 +116,15 @@ class UpdateValidator:
     ]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
+    ]
+    login_history_due_date = Annotated[
+        date | None, BeforeValidator(is_date_validator("login history due_date", True))
+    ]
+    login_history_login_time = Annotated[
+        datetime | None, BeforeValidator(is_datetime_validator("login history login time", True))
+    ]
+    login_history_logout_time = Annotated[
+        datetime | None, BeforeValidator(is_datetime_validator("login history logout time", True))
     ]
     money_log_id = Annotated[UUID, BeforeValidator(is_uuid_validator("money log id"))]
     money_log_type = Annotated[
