@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal
 from typing import Annotated
 from uuid import UUID
 
@@ -12,9 +13,11 @@ from src.utils.bank_utils import (
 )
 from src.utils.cpf_utils import is_cpf_validator
 from src.utils.date_utils import is_date_validator
+from src.utils.decimal_utils import is_decimal_validator
 from src.utils.email_utils import is_email_validator
 from src.utils.gender_enum import GenderType
 from src.utils.gender_utils import is_gender_validator
+from src.utils.integer_utils import is_integer_validator
 from src.utils.phone_utils import is_phone_validator
 from src.utils.string_utils import is_string_validator
 from src.utils.username_utils import is_username_validator
@@ -57,6 +60,7 @@ class CreateValidator:
     salary_occupation = Annotated[
         str | None, AfterValidator(is_string_validator("salary occupation", 2, 64, True))
     ]
+    salary_salary = Annotated[Decimal, AfterValidator(is_decimal_validator("salary", True))]
 
 
 @dataclass
@@ -100,9 +104,19 @@ class UpdateValidator:
     invoice_description = Annotated[
         str | None, AfterValidator(is_string_validator("invoice description", 0, 255, True))
     ]
+    salary_id = Annotated[UUID, BeforeValidator(is_uuid_validator("salary id"))]
     salary_company = Annotated[
         str | None, AfterValidator(is_string_validator("salary company", 2, 64, True))
     ]
     salary_occupation = Annotated[
         str | None, AfterValidator(is_string_validator("salary occupation", 2, 64, True))
     ]
+    salary_salary = Annotated[Decimal, AfterValidator(is_decimal_validator("salary", True))]
+    salary_start_date = Annotated[date, BeforeValidator(is_date_validator("salary start_date"))]
+    salary_end_date = Annotated[date, BeforeValidator(is_date_validator("salary end_date"))]
+
+
+@dataclass
+class GetValidator:
+    limit = Annotated[int, AfterValidator(is_integer_validator("limit"))]
+    offset = Annotated[int, AfterValidator(is_integer_validator("offset"))]
