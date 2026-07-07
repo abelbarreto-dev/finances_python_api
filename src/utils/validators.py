@@ -11,6 +11,7 @@ from src.utils.bank_utils import (
     is_agency_validator,
     is_code_validator,
 )
+from src.utils.boolean_utils import is_boolean_validator
 from src.utils.cpf_utils import is_cpf_validator
 from src.utils.date_utils import is_date_validator
 from src.utils.decimal_utils import is_decimal_validator
@@ -19,6 +20,7 @@ from src.utils.gender_enum import GenderType
 from src.utils.gender_utils import is_gender_validator
 from src.utils.integer_utils import is_integer_validator
 from src.utils.phone_utils import is_phone_validator
+from src.utils.pix_enum import PixType
 from src.utils.string_utils import is_string_validator
 from src.utils.username_utils import is_username_validator
 from src.utils.uuid_utils import is_uuid_validator
@@ -50,6 +52,8 @@ class CreateValidator:
     pix_description = Annotated[
         str | None, AfterValidator(is_string_validator("pix description", 0, 128, True))
     ]
+    pix_is_mine = Annotated[bool, BeforeValidator(is_boolean_validator("pix is_mine"))]
+    pix_pix_type = Annotated[PixType, BeforeValidator(is_gender_validator("pix pix_type"))]
     invoice_name = Annotated[str, AfterValidator(is_string_validator("invoice name", 2, 32))]
     invoice_description = Annotated[
         str | None, AfterValidator(is_string_validator("invoice description", 0, 255, True))
@@ -82,6 +86,7 @@ class UpdateValidator:
     cash_description = Annotated[
         str | None, AfterValidator(is_string_validator("cash description", 0, 128, True))
     ]
+    bank_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id"))]
     bank_code = Annotated[str | None, AfterValidator(is_code_validator)]
     bank_name = Annotated[
         str | None, AfterValidator(is_string_validator("bank name", 2, 64, True))
@@ -94,9 +99,16 @@ class UpdateValidator:
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
     ]
+    pix_id = Annotated[UUID, BeforeValidator(is_uuid_validator("pix id"))]
     pix_name = Annotated[str | None, AfterValidator(is_string_validator("pix name", 2, 32, True))]
     pix_description = Annotated[
         str | None, AfterValidator(is_string_validator("pix description", 0, 128, True))
+    ]
+    pix_is_mine = Annotated[
+        bool | None, BeforeValidator(is_boolean_validator("pix is_mine", True))
+    ]
+    pix_pix_type = Annotated[
+        PixType | None, BeforeValidator(is_gender_validator("pix pix_type", True))
     ]
     invoice_name = Annotated[
         str | None, AfterValidator(is_string_validator("invoice name", 2, 32, True))
@@ -111,7 +123,7 @@ class UpdateValidator:
     salary_occupation = Annotated[
         str | None, AfterValidator(is_string_validator("salary occupation", 2, 64, True))
     ]
-    salary_salary = Annotated[Decimal, AfterValidator(is_decimal_validator("salary", True))]
+    salary_salary = Annotated[Decimal | None, AfterValidator(is_decimal_validator("salary", True))]
     salary_start_date = Annotated[date, BeforeValidator(is_date_validator("salary start_date"))]
     salary_end_date = Annotated[date, BeforeValidator(is_date_validator("salary end_date"))]
 
