@@ -46,6 +46,7 @@ class User(Base):
     cashes = relationship("Cash", back_populates="user")
     invoices = relationship("Invoice", back_populates="user")
     salary = relationship("Salary", back_populates="user")
+    money_logs = relationship("MoneyLog", back_populates="user")
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), nullable=False
@@ -100,6 +101,7 @@ class Bank(Base):
     balance: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=0)
 
     bank_boxes = relationship("BankBox", back_populates="bank")
+    pixes = relationship("Pix", back_populates="bank")
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), nullable=False

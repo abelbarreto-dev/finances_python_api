@@ -16,10 +16,16 @@ def gen_valid_cpf() -> str:
     return cpf + calc_cpf_checker(cpf)
 
 
-def is_cpf_validator(nullable: bool = False) -> Callable[[str], str]:
-    def validator(value: str | None) -> str:
+def is_cpf_validator(nullable: bool = False) -> Callable[[str | None], str | None]:
+    def validator(value: str | None) -> str | None:
         if value is None and nullable:
             return value
+        elif value is None:
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message="cpf cannot be nullable")
+            )
+        elif not isinstance(value, str):
+            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cpf not matches"))
 
         checker = is_cpf_numeric(value)
 
@@ -46,7 +52,7 @@ def is_cpf_validator(nullable: bool = False) -> Callable[[str], str]:
 
 def is_cpf_numeric(value: str) -> bool:
     regex = compile(r"^[0-9]{11}$")
-    return regex.match(value) is not None
+    return isinstance(value, str) and regex.match(value) is not None
 
 
 def calc_cpf_checker(value: str):

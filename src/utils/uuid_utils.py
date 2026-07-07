@@ -1,4 +1,3 @@
-from datetime import date
 from http.client import BAD_REQUEST
 from typing import Callable
 from uuid import UUID
@@ -6,8 +5,8 @@ from uuid import UUID
 from fastapi import HTTPException
 
 
-def is_uuid_validator(name: str, nullable: bool = False) -> Callable[[any | None], date]:
-    def validator(value: any | None) -> date:
+def is_uuid_validator(name: str, nullable: bool = False) -> Callable[[any | None], UUID]:
+    def validator(value: any | None) -> UUID | None:
         if nullable and value is None:
             return value
         elif not nullable and value is None:
@@ -19,6 +18,6 @@ def is_uuid_validator(name: str, nullable: bool = False) -> Callable[[any | None
                 status_code=BAD_REQUEST, detail=dict(message=f"{name} must be valid uuid")
             )
 
-        return date(value)
+        return value
 
     return validator

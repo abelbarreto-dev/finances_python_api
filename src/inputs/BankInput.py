@@ -11,7 +11,7 @@ class BankInputCreate(BaseModel):
     user_id: uuid.UUID = UpdateValidator.user_id
     code: str = CreateValidator.bank_code
     name: str = CreateValidator.bank_name
-    agency: Optional[str] = CreateValidator.bank_agency
+    agency: str = CreateValidator.bank_agency
     account_number: str = CreateValidator.bank_account_number
     balance: Decimal = CreateValidator.bank_balance
 

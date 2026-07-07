@@ -9,10 +9,20 @@ def is_string_validator(
     min_len: int = 0,
     max_len: int = 255,
     is_nullable: bool = False,
-) -> Callable[[str], str]:
-    def validator(value: str | None) -> str:
+) -> Callable[[str | None], str | None]:
+    def validator(value: str | None) -> str | None:
         if is_nullable and value is None:
             return value
+        elif value is None:
+            raise HTTPException(
+                status_code=BAD_REQUEST,
+                detail=dict(message=f"{name} cannot be nullable"),
+            )
+        elif not isinstance(value, str):
+            raise HTTPException(
+                status_code=BAD_REQUEST,
+                detail=dict(message=f"{name} must be a string"),
+            )
 
         len_value = len(value)
 

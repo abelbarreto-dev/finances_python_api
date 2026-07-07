@@ -18,6 +18,6 @@ def is_datetime_validator(name: str, nullable: bool = False) -> Callable[[any | 
                 status_code=BAD_REQUEST, detail=dict(message=f"{name} must be valid datetime")
             )
 
-        return datetime(value)
+        return value
 
     return validator

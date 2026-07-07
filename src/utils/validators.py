@@ -21,10 +21,12 @@ from src.utils.gender_enum import GenderType
 from src.utils.gender_utils import is_gender_validator
 from src.utils.integer_utils import is_integer_validator
 from src.utils.invoice_enum import InvoiceStatus, InvoiceType
+from src.utils.invoice_utils import is_invoice_status_validator, is_invoice_type_validator
 from src.utils.money_enum import MoneyMethod, MoneyType
-from src.utils.money_utils import is_money_type_validator
+from src.utils.money_utils import is_money_method_validator, is_money_type_validator
 from src.utils.phone_utils import is_phone_validator
 from src.utils.pix_enum import PixType
+from src.utils.pix_utils import is_pix_validator
 from src.utils.string_utils import is_string_validator
 from src.utils.username_utils import is_username_validator
 from src.utils.uuid_utils import is_uuid_validator
@@ -64,7 +66,7 @@ class CreateValidator:
         MoneyType, BeforeValidator(is_money_type_validator("money log type enum"))
     ]
     money_log_method = Annotated[
-        MoneyMethod, BeforeValidator(is_money_type_validator("money log method enum"))
+        MoneyMethod, BeforeValidator(is_money_method_validator("money log method enum"))
     ]
     money_amount = Annotated[Decimal, AfterValidator(is_decimal_validator("money amount"))]
     pix_name = Annotated[str, AfterValidator(is_string_validator("pix name", 2, 32))]
@@ -72,7 +74,7 @@ class CreateValidator:
         str | None, AfterValidator(is_string_validator("pix description", 0, 128, True))
     ]
     pix_is_mine = Annotated[bool, BeforeValidator(is_boolean_validator("pix is_mine"))]
-    pix_pix_type = Annotated[PixType, BeforeValidator(is_gender_validator("pix pix_type"))]
+    pix_pix_type = Annotated[PixType, BeforeValidator(is_pix_validator("pix pix type"))]
     invoice_name = Annotated[str, AfterValidator(is_string_validator("invoice name", 2, 32))]
     invoice_description = Annotated[
         str | None, AfterValidator(is_string_validator("invoice description", 0, 255, True))
@@ -89,9 +91,11 @@ class CreateValidator:
         Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
     ]
     invoice_status = Annotated[
-        InvoiceStatus, BeforeValidator(is_gender_validator("invoice status"))
+        InvoiceStatus, BeforeValidator(is_invoice_status_validator("invoice status"))
     ]
-    invoice_type = Annotated[InvoiceType, BeforeValidator(is_gender_validator("invoice type"))]
+    invoice_type = Annotated[
+        InvoiceType, BeforeValidator(is_invoice_type_validator("invoice type"))
+    ]
     salary_company = Annotated[
         str | None, AfterValidator(is_string_validator("salary company", 2, 64, True))
     ]
@@ -162,7 +166,7 @@ class UpdateValidator:
     ]
     money_log_method = Annotated[
         MoneyMethod | None,
-        BeforeValidator(is_money_type_validator("money log method enum", True)),
+        BeforeValidator(is_money_method_validator("money log method enum", True)),
     ]
     money_due_date = Annotated[date, BeforeValidator(is_date_validator("money due_date", True))]
     money_amount = Annotated[
@@ -177,7 +181,7 @@ class UpdateValidator:
         bool | None, BeforeValidator(is_boolean_validator("pix is_mine", True))
     ]
     pix_pix_type = Annotated[
-        PixType | None, BeforeValidator(is_gender_validator("pix pix_type", True))
+        PixType | None, BeforeValidator(is_pix_validator("pix pix type", True))
     ]
     invoice_id = Annotated[UUID, BeforeValidator(is_uuid_validator("invoice id"))]
     invoice_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("invoice id", True))]
@@ -197,10 +201,10 @@ class UpdateValidator:
         int | None, AfterValidator(is_integer_validator("invoice installs paid", True))
     ]
     invoice_status = Annotated[
-        InvoiceStatus | None, BeforeValidator(is_gender_validator("invoice status", True))
+        InvoiceStatus | None, BeforeValidator(is_invoice_status_validator("invoice status", True))
     ]
     invoice_type = Annotated[
-        InvoiceType | None, BeforeValidator(is_gender_validator("invoice type", True))
+        InvoiceType | None, BeforeValidator(is_invoice_type_validator("invoice type", True))
     ]
     invoice_amount = Annotated[
         Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))

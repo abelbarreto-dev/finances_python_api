@@ -5,10 +5,18 @@ from typing import Callable
 from fastapi import HTTPException
 
 
-def is_username_validator(nullable: bool = False) -> Callable[[str], str]:
-    def validator(value: str) -> str:
+def is_username_validator(nullable: bool = False) -> Callable[[str | None], str | None]:
+    def validator(value: str | None) -> str | None:
         if value is None and nullable:
             return value
+        elif value is None:
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message="username cannot be nullable")
+            )
+        elif not isinstance(value, str):
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message="username must be valid")
+            )
 
         regex = compile(r"^[a-z_][a-z_0-9]{2,63}$")
 

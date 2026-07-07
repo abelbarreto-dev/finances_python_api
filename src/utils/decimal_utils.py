@@ -15,6 +15,10 @@ def is_decimal_validator(
             raise HTTPException(
                 status_code=BAD_REQUEST, detail=dict(message=f"{name} decimal cannot be nullable")
             )
+        elif not isinstance(value, Decimal):
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message=f"{name} must be a decimal")
+            )
         elif not negative and value < 0:
             raise HTTPException(
                 status_code=BAD_REQUEST, detail=dict(message=f"{name} decimal cannot be negative")

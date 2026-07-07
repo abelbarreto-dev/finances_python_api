@@ -20,10 +20,16 @@ def gen_valid_cnpj(is_alpha: bool = False):
     return cnpj + digit
 
 
-def is_cnpj_validator(nullable: bool = False) -> Callable[[str], str]:
-    def validator(value: str | None) -> str:
+def is_cnpj_validator(nullable: bool = False) -> Callable[[str | None], str | None]:
+    def validator(value: str | None) -> str | None:
         if value is None and nullable:
             return value
+        elif value is None:
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message="cnpj cannot be nullable")
+            )
+        elif not isinstance(value, str):
+            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj not matches"))
 
         regex = compile(r"^[0-9A-Z]{14}$")
 

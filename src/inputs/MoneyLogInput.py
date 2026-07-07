@@ -22,7 +22,7 @@ class MoneyLogInputCreate(BaseModel):
 
 class ListMoneyLogInput(BaseModel):
     limit: int = GetValidator.limit
-    offset: int = GetValidator.limit
+    offset: int = GetValidator.offset
     bank_id: Optional[uuid.UUID] = UpdateValidator.bank_filter_id
     bank_box_id: Optional[uuid.UUID] = UpdateValidator.bank_box_filter_id
     cash_id: Optional[uuid.UUID] = UpdateValidator.cash_filter_id

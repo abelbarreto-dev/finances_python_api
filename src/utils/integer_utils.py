@@ -14,6 +14,10 @@ def is_integer_validator(
             raise HTTPException(
                 status_code=BAD_REQUEST, detail=dict(message=f"{name} integer cannot be nullable")
             )
+        elif not isinstance(value, int) or isinstance(value, bool):
+            raise HTTPException(
+                status_code=BAD_REQUEST, detail=dict(message=f"{name} must be an integer")
+            )
         elif not negative and value < 0:
             raise HTTPException(
                 status_code=BAD_REQUEST, detail=dict(message=f"{name} integer cannot be negative")
