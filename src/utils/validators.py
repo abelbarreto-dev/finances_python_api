@@ -46,18 +46,22 @@ class CreateValidator:
     cash_description = Annotated[
         str | None, AfterValidator(is_string_validator("cash description", 0, 128, True))
     ]
-    cash_balance = Annotated[Decimal, AfterValidator(is_decimal_validator("cash balance"))]
+    cash_balance = Annotated[
+        Decimal, AfterValidator(is_decimal_validator("cash balance", negative=True))
+    ]
     bank_code = Annotated[str, AfterValidator(is_code_validator)]
     bank_name = Annotated[str, AfterValidator(is_string_validator("bank name", 2, 64))]
     bank_agency = Annotated[str, AfterValidator(is_agency_validator)]
     bank_account_number = Annotated[str, AfterValidator(is_account_number_validator)]
-    bank_balance = Annotated[Decimal, AfterValidator(is_decimal_validator("bank balance"))]
+    bank_balance = Annotated[
+        Decimal, AfterValidator(is_decimal_validator("bank balance", negative=True))
+    ]
     bank_box_tag = Annotated[str, AfterValidator(is_string_validator("bank box tag", 2, 32))]
     bank_box_description = Annotated[
         str | None, AfterValidator(is_string_validator("bank box description", 0, 128, True))
     ]
     bank_box_balance = Annotated[
-        Decimal, AfterValidator(is_decimal_validator("bank box balance"))
+        Decimal, AfterValidator(is_decimal_validator("bank box balance", negative=True))
     ]
     login_history_login_time = Annotated[
         datetime, BeforeValidator(is_datetime_validator("login history login time"))
@@ -68,7 +72,9 @@ class CreateValidator:
     money_log_method = Annotated[
         MoneyMethod, BeforeValidator(is_money_method_validator("money log method enum"))
     ]
-    money_amount = Annotated[Decimal, AfterValidator(is_decimal_validator("money amount"))]
+    money_amount = Annotated[
+        Decimal, AfterValidator(is_decimal_validator("money amount", negative=True))
+    ]
     pix_name = Annotated[str, AfterValidator(is_string_validator("pix name", 2, 32))]
     pix_description = Annotated[
         str | None, AfterValidator(is_string_validator("pix description", 0, 128, True))
@@ -86,9 +92,11 @@ class CreateValidator:
     invoice_installs_paid = Annotated[
         int, AfterValidator(is_integer_validator("invoice installs paid"))
     ]
-    invoice_amount = Annotated[Decimal, AfterValidator(is_decimal_validator("invoice amount"))]
+    invoice_amount = Annotated[
+        Decimal, AfterValidator(is_decimal_validator("invoice amount", negative=True))
+    ]
     invoice_total_amount = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
+        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True, True))
     ]
     invoice_status = Annotated[
         InvoiceStatus, BeforeValidator(is_invoice_status_validator("invoice status"))
@@ -127,7 +135,7 @@ class UpdateValidator:
         str | None, AfterValidator(is_string_validator("cash description", 0, 128, True))
     ]
     cash_balance = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("cash balance", True))
+        Decimal | None, AfterValidator(is_decimal_validator("cash balance", True, True))
     ]
     bank_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id"))]
     bank_filter_id = Annotated[UUID, BeforeValidator(is_uuid_validator("bank id", True))]
@@ -170,7 +178,7 @@ class UpdateValidator:
     ]
     money_due_date = Annotated[date, BeforeValidator(is_date_validator("money due_date", True))]
     money_amount = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("money amount", True))
+        Decimal | None, AfterValidator(is_decimal_validator("money amount", True, True))
     ]
     pix_id = Annotated[UUID, BeforeValidator(is_uuid_validator("pix id"))]
     pix_name = Annotated[str | None, AfterValidator(is_string_validator("pix name", 2, 32, True))]
@@ -207,10 +215,10 @@ class UpdateValidator:
         InvoiceType | None, BeforeValidator(is_invoice_type_validator("invoice type", True))
     ]
     invoice_amount = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
+        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True, True))
     ]
     invoice_total_amount = Annotated[
-        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True))
+        Decimal | None, AfterValidator(is_decimal_validator("invoice amount", True, True))
     ]
     salary_id = Annotated[UUID, BeforeValidator(is_uuid_validator("salary id"))]
     salary_company = Annotated[
