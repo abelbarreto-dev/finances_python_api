@@ -11,6 +11,7 @@
     "migrate:gen": "alembic revision --autogenerate -m ",
     "migrate:run": "alembic upgrade head",
     "migrate:revert": "alembic downgrade -1",
-    "migrate:info": "alembic current"
+    "migrate:info": "alembic current",
+    "graphql:gen": "python gen.graphql.py"
   }
 }
