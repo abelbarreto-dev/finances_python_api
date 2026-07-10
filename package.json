@@ -12,6 +12,8 @@
     "migrate:run": "alembic upgrade head",
     "migrate:revert": "alembic downgrade -1",
     "migrate:info": "alembic current",
-    "graphql:gen": "python gen.graphql.py"
+    "format:imports": "ruff check --select I --fix . && sdsort .",
+    "format:files": "ruff format .",
+    "graphql:gen": "python gen.graphql.py && yarn format:imports && yarn format:files"
   }
 }

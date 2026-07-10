@@ -1,0 +1,303 @@
+scalar Date
+scalar DateTime
+
+enum MoneyType {
+  PAYMENT
+  RECEIPT
+  TRANSFER
+}
+
+enum MoneyMethod {
+  CASH
+  PIX
+  DOC
+  TED
+  CREDIT_CARD
+  DEBIT_CARD
+  CHECK
+  BANK_SLIP
+  OTHER
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  CANCELED
+  CONTINUED
+}
+
+enum InvoiceType {
+  CASH
+  PIX
+  DOC
+  TED
+  CREDIT_CARD
+  DEBIT_CARD
+  CHECK
+  BANK_SLIP
+  OTHER
+}
+
+enum PixType {
+  CPF
+  CNPJ
+  EMAIL
+  PHONE
+  RANDOM
+}
+
+enum GenderType {
+  MALE
+  FEMALE
+  NOT_SAY
+}
+
+input MoneyLogInputCreate {
+  user_id: ID!
+  bank_id: ID
+  bank_box_id: ID
+  cash_id: ID
+  invoice_id: ID
+  type_opp: MoneyType!
+  method_opp: MoneyMethod!
+  amount: Float!
+}
+
+input ListMoneyLogInput {
+  limit: Int!
+  offset: Int!
+  bank_id: ID
+  bank_box_id: ID
+  cash_id: ID
+  invoice_id: ID
+  type_opp: MoneyType
+  method_opp: MoneyMethod
+  due_date: Date
+}
+
+input MoneyLogInputUpdate {
+  id: ID!
+  bank_id: ID
+  bank_box_id: ID
+  cash_id: ID
+  invoice_id: ID
+  type_opp: MoneyType
+  method_opp: MoneyMethod
+  amount: Float
+}
+
+input LoginHistoryInputCreate {
+  user_id: ID!
+  login_time: DateTime!
+}
+
+input ListLoginHistoryInput {
+  limit: Int!
+  offset: Int!
+  due_date: Date
+}
+
+input LoginHistoryInputUpdate {
+  id: ID!
+  logout_time: DateTime
+}
+
+input InvoiceInputCreate {
+  user_id: ID!
+  name: String!
+  description: String
+  installments: Int!
+  installs_paid: Int!
+  amount: Float!
+  total_amount: Float
+  due_date: Date!
+  invoice_type: InvoiceType!
+  status: InvoiceStatus!
+}
+
+input ListInvoiceInput {
+  limit: Int!
+  offset: Int!
+  name: String
+  installments: Int
+  due_date: Date
+  invoice_type: InvoiceType
+  status: InvoiceStatus
+}
+
+input InvoiceInputUpdate {
+  id: ID!
+  name: String
+  description: String
+  installments: Int
+  installs_paid: Int
+  amount: Float
+  total_amount: Float
+  due_date: Date
+  invoice_type: InvoiceType
+  status: InvoiceStatus
+}
+
+input BankInputCreate {
+  user_id: ID!
+  code: String!
+  name: String!
+  agency: String!
+  account_number: String!
+  balance: Float!
+}
+
+input ListBankInput {
+  limit: Int!
+  offset: Int!
+  name: String
+}
+
+input BankInputUpdate {
+  id: ID!
+  code: String
+  name: String
+  agency: String
+  account_number: String
+  balance: Float
+}
+
+input BankBoxInputCreate {
+  bank_id: ID!
+  tag: String!
+  description: String
+  balance: Float!
+}
+
+input ListBankBoxInput {
+  limit: Int!
+  offset: Int!
+  bank_id: ID!
+  tag: String
+}
+
+input BankBoxInputUpdate {
+  id: ID!
+  tag: String
+  description: String
+  balance: Float
+}
+
+input PixInputCreate {
+  bank_id: ID!
+  name: String!
+  description: String
+  pix_type: PixType
+  is_mine: Boolean!
+}
+
+input ListPixInput {
+  limit: Int!
+  offset: Int!
+  bank_id: ID!
+  name: String
+  pix_type: PixType
+  is_mine: Boolean
+}
+
+input PixInputUpdate {
+  id: ID!
+  name: String
+  description: String
+  pix_type: PixType
+  is_mine: Boolean
+}
+
+input UserInputCreate {
+  full_name: String!
+  date_born: Date!
+  gender: GenderType!
+  cpf: String!
+  email: String!
+  username: String!
+  password: String!
+  phone: String
+}
+
+input UserInputLogin {
+  username: String!
+  password: String!
+}
+
+input UserInputUpdate {
+  id: ID!
+  full_name: String
+  date_born: Date
+  gender: GenderType
+  cpf: String
+  email: String
+  username: String
+  phone: String
+}
+
+input CashInputCreate {
+  user_id: ID!
+  tag: String!
+  description: String
+  balance: Float!
+}
+
+input ListCashInput {
+  limit: Int!
+  offset: Int!
+  tag: String
+}
+
+input CashInputUpdate {
+  id: ID!
+  tag: String
+  description: String
+  balance: Float
+}
+
+input SalaryInputCreate {
+  user_id: ID!
+  company: String
+  occupation: String
+  salary: Float
+}
+
+input ListSalaryInput {
+  limit: Int!
+  offset: Int!
+  company: String
+  start_date: Date
+  end_date: Date
+}
+
+input SalaryInputUpdate {
+  id: ID!
+  company: String
+  occupation: String
+  salary: Float
+}
+
+type UserDTO {
+  id: ID!
+  full_name: String!
+  date_born: Date!
+  gender: GenderType!
+  cpf: String!
+  email: String!
+  username: String!
+  phone: String
+  created_at: Date!
+}
+
+type MessageDTO {
+  message: String!
+}
+
+type Query {}
+
+type Mutation {
+  loginUser(user: UserInputLogin!): UserDTO!
+  createUser(user: UserInputCreate!): UserDTO!
+  updateUser(user: UserInputCreate!): UserDTO!
+  deleteUser(id: ID!): MessageDTO!
+}
