@@ -6,38 +6,37 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.utils.money_enum import MoneyMethod, MoneyType
-from src.utils.validators import CreateValidator, GetValidator, UpdateValidator
 
 
 class MoneyLogInputCreate(BaseModel):
-    user_id: uuid.UUID = UpdateValidator.user_id
-    bank_id: Optional[uuid.UUID] = UpdateValidator.bank_filter_id
-    bank_box_id: Optional[uuid.UUID] = UpdateValidator.bank_box_filter_id
-    cash_id: Optional[uuid.UUID] = UpdateValidator.cash_filter_id
-    invoice_id: Optional[uuid.UUID] = UpdateValidator.invoice_filter_id
-    type_opp: MoneyType = CreateValidator.money_log_type
-    method_opp: MoneyMethod = CreateValidator.money_log_method
-    amount: Decimal = CreateValidator.money_amount
+    user_id: uuid.UUID
+    bank_id: Optional[uuid.UUID] = None
+    bank_box_id: Optional[uuid.UUID] = None
+    cash_id: Optional[uuid.UUID] = None
+    invoice_id: Optional[uuid.UUID] = None
+    type_opp: MoneyType
+    method_opp: MoneyMethod
+    amount: Decimal
 
 
 class ListMoneyLogInput(BaseModel):
-    limit: int = GetValidator.limit
-    offset: int = GetValidator.offset
-    bank_id: Optional[uuid.UUID] = UpdateValidator.bank_filter_id
-    bank_box_id: Optional[uuid.UUID] = UpdateValidator.bank_box_filter_id
-    cash_id: Optional[uuid.UUID] = UpdateValidator.cash_filter_id
-    invoice_id: Optional[uuid.UUID] = UpdateValidator.invoice_filter_id
-    type_opp: Optional[MoneyType] = UpdateValidator.money_log_type
-    method_opp: Optional[MoneyMethod] = UpdateValidator.money_log_method
-    due_date: Optional[date] = UpdateValidator.money_due_date
+    limit: int
+    offset: int
+    bank_id: Optional[uuid.UUID] = None
+    bank_box_id: Optional[uuid.UUID] = None
+    cash_id: Optional[uuid.UUID] = None
+    invoice_id: Optional[uuid.UUID] = None
+    type_opp: Optional[MoneyType] = None
+    method_opp: Optional[MoneyMethod] = None
+    due_date: Optional[date] = None
 
 
 class MoneyLogInputUpdate(BaseModel):
-    id: uuid.UUID = UpdateValidator.money_log_id
-    bank_id: Optional[uuid.UUID] = UpdateValidator.bank_filter_id
-    bank_box_id: Optional[uuid.UUID] = UpdateValidator.bank_box_filter_id
-    cash_id: Optional[uuid.UUID] = UpdateValidator.cash_filter_id
-    invoice_id: Optional[uuid.UUID] = UpdateValidator.invoice_filter_id
-    type_opp: Optional[MoneyType] = UpdateValidator.money_log_type
-    method_opp: Optional[MoneyMethod] = UpdateValidator.money_log_method
-    amount: Optional[Decimal] = UpdateValidator.money_amount
+    id: uuid.UUID
+    bank_id: Optional[uuid.UUID] = None
+    bank_box_id: Optional[uuid.UUID] = None
+    cash_id: Optional[uuid.UUID] = None
+    invoice_id: Optional[uuid.UUID] = None
+    type_opp: Optional[MoneyType] = None
+    method_opp: Optional[MoneyMethod] = None
+    amount: Optional[Decimal] = None

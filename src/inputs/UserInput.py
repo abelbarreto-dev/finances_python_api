@@ -5,31 +5,30 @@ from typing import Optional
 from pydantic import BaseModel
 
 from src.utils.gender_enum import GenderType
-from src.utils.validators import CreateValidator, UpdateValidator
 
 
 class UserInputCreate(BaseModel):
-    full_name: str = CreateValidator.user_full_name
-    date_born: date = CreateValidator.user_date_born
-    gender: GenderType = CreateValidator.user_gender
-    cpf: str = CreateValidator.user_cpf
-    email: str = CreateValidator.user_email
-    username: str = CreateValidator.user_username
-    password: str = CreateValidator.user_password
-    phone: Optional[str] = CreateValidator.user_phone
+    full_name: str
+    date_born: date
+    gender: GenderType
+    cpf: str
+    email: str
+    username: str
+    password: str
+    phone: Optional[str] = None
 
 
 class UserInputLogin(BaseModel):
-    username: str = CreateValidator.user_username
-    password: str = CreateValidator.user_password
+    username: str
+    password: str
 
 
 class UserInputUpdate(BaseModel):
-    id: uuid.UUID = UpdateValidator.user_id
-    full_name: Optional[str] = UpdateValidator.user_full_name
-    date_born: Optional[date] = UpdateValidator.user_date_born
-    gender: Optional[GenderType] = UpdateValidator.user_gender
-    cpf: Optional[str] = UpdateValidator.user_cpf
-    email: Optional[str] = UpdateValidator.user_email
-    username: Optional[str] = UpdateValidator.user_username
-    phone: Optional[str] = UpdateValidator.user_phone
+    id: uuid.UUID
+    full_name: Optional[str] = None
+    date_born: Optional[date] = None
+    gender: Optional[GenderType] = None
+    cpf: Optional[str] = None
+    email: Optional[str] = None
+    username: Optional[str] = None
+    phone: Optional[str] = None
