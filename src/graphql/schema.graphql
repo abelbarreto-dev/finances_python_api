@@ -72,7 +72,6 @@ input ListMoneyLogInput {
   invoice_id: ID
   type_opp: MoneyType
   method_opp: MoneyMethod
-  due_date: Date
 }
 
 input MoneyLogInputUpdate {
@@ -151,6 +150,7 @@ input ListBankInput {
   limit: Int!
   offset: Int!
   name: String
+  code: String
 }
 
 input BankInputUpdate {

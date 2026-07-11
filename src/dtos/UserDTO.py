@@ -15,5 +15,5 @@ class UserDTO(BaseModel):
     cpf: str
     email: str
     username: str
-    phone: Optional[str]
+    phone: Optional[str] = None
     created_at: date

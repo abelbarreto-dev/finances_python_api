@@ -18,6 +18,7 @@ class ListBankInput(BaseModel):
     limit: int
     offset: int
     name: Optional[str] = None
+    code: Optional[str] = None
 
 
 class BankInputUpdate(BaseModel):

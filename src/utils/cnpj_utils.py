@@ -1,7 +1,6 @@
 from http.client import BAD_REQUEST
 from random import choice
 from re import compile
-from typing import Callable
 
 from fastapi import HTTPException
 
@@ -20,32 +19,25 @@ def gen_valid_cnpj(is_alpha: bool = False):
     return cnpj + digit
 
 
-def is_cnpj_validator(nullable: bool = False) -> Callable[[str | None], str | None]:
-    def validator(value: str | None) -> str | None:
-        if value is None and nullable:
-            return value
-        elif value is None:
-            raise HTTPException(
-                status_code=BAD_REQUEST, detail=dict(message="cnpj cannot be nullable")
-            )
-        elif not isinstance(value, str):
-            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj not matches"))
-
-        regex = compile(r"^[0-9A-Z]{14}$")
-
-        if regex.match(value) is None:
-            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj not matches"))
-
-        checker = validate_cnpj(value)
-
-        if not checker:
-            raise HTTPException(
-                status_code=BAD_REQUEST, detail=dict(message="cnpj must be valid")
-            )
-
+def is_cnpj_validator(value: str | None, nullable: bool = False) -> None:
+    if value is None and nullable:
         return value
+    elif value is None:
+        raise HTTPException(
+            status_code=BAD_REQUEST, detail=dict(message="cnpj cannot be nullable")
+        )
+    elif not isinstance(value, str):
+        raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj not matches"))
 
-    return validator
+    regex = compile(r"^[0-9A-Z]{14}$")
+
+    if regex.match(value) is None:
+        raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj not matches"))
+
+    checker = validate_cnpj(value)
+
+    if not checker:
+        raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cnpj must be valid"))
 
 
 def validate_cnpj(value: str) -> bool:

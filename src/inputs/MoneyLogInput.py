@@ -28,7 +28,6 @@ class ListMoneyLogInput(BaseModel):
     invoice_id: Optional[uuid.UUID] = None
     type_opp: Optional[MoneyType] = None
     method_opp: Optional[MoneyMethod] = None
-    due_date: Optional[date] = None
 
 
 class MoneyLogInputUpdate(BaseModel):
