@@ -1,8 +1,8 @@
 from http.client import BAD_REQUEST
 
 from fastapi import HTTPException
-from graphql import GraphQLError
 
+from graphql import GraphQLError
 from src.inputs.BankBoxInput import BankBoxInputCreate, BankBoxInputUpdate, ListBankBoxInput
 from src.inputs.BankInput import BankInputCreate, BankInputUpdate, ListBankInput
 from src.inputs.CashInput import CashInputCreate, CashInputUpdate, ListCashInput
@@ -189,10 +189,7 @@ class AccessValidator:
             is_username_validator(login.username)
             is_string_validator("user password", login.password, 8, 255)
         except GraphQLError as ge:
-            raise HTTPException(
-                status_code=BAD_REQUEST,
-                detail=dict(message=ge.message)
-            )
+            raise HTTPException(status_code=BAD_REQUEST, detail=dict(message=ge.message))
 
 
 class GetValidator:
