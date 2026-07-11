@@ -7,6 +7,7 @@
   "author": "Abel Carvalho <abelbcarvalho.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start:run": "uvicorn app:app --reload",
     "migrate:base": "alembic downgrade base",
     "migrate:gen": "alembic revision --autogenerate -m ",
     "migrate:run": "alembic upgrade head",

@@ -293,11 +293,11 @@ type MessageDTO {
   message: String!
 }
 
-type Query {}
+type Query {
+  health: String!
+}
 
-type Mutation {
-  loginUser(user: UserInputLogin!): UserDTO!
-  createUser(user: UserInputCreate!): UserDTO!
+type Mutation {  createUser(user: UserInputCreate!): UserDTO!
   updateUser(user: UserInputCreate!): UserDTO!
   deleteUser(id: ID!): MessageDTO!
 }

@@ -1,8 +1,7 @@
-from http.client import BAD_REQUEST
 from random import choice
 from re import compile
 
-from fastapi import HTTPException
+from graphql import GraphQLError
 
 
 def gen_valid_cpf() -> str:
@@ -19,18 +18,16 @@ def is_cpf_validator(value: str | None, nullable: bool = False) -> None:
     if value is None and nullable:
         return value
     elif value is None:
-        raise HTTPException(
-            status_code=BAD_REQUEST, detail=dict(message="cpf cannot be nullable")
-        )
+        raise GraphQLError(message="cpf cannot be nullable")
     elif not isinstance(value, str):
-        raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cpf not matches"))
+        raise GraphQLError(message="cpf not matches")
 
     checker = is_cpf_numeric(value)
 
     cpf = value[0:9]
 
     if not checker:
-        raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cpf not matches"))
+        raise GraphQLError(message="cpf not matches")
 
     digit = calc_cpf_checker(cpf)
 
@@ -41,7 +38,7 @@ def is_cpf_validator(value: str | None, nullable: bool = False) -> None:
     checker = value[9:11] == digits
 
     if not checker:
-        raise HTTPException(status_code=BAD_REQUEST, detail=dict(message="cpf must be valid"))
+        raise GraphQLError(message="cpf must be valid")
 
 
 def is_cpf_numeric(value: str) -> bool:

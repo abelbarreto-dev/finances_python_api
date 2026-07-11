@@ -1,3 +1,8 @@
+from http.client import BAD_REQUEST
+
+from fastapi import HTTPException
+from graphql import GraphQLError
+
 from src.inputs.BankBoxInput import BankBoxInputCreate, BankBoxInputUpdate, ListBankBoxInput
 from src.inputs.BankInput import BankInputCreate, BankInputUpdate, ListBankInput
 from src.inputs.CashInput import CashInputCreate, CashInputUpdate, ListCashInput
@@ -103,7 +108,7 @@ class CreateValidator:
 
 class UpdateValidator:
     @classmethod
-    def user_validator(user: UserInputUpdate):
+    def user_validator(cls, user: UserInputUpdate):
         is_uuid_validator("user id", user.id)
         is_string_validator("user full_name", user.full_name, 2, 64, True)
         is_date_validator(user.date_born, "user date_born", True)
@@ -130,7 +135,7 @@ class UpdateValidator:
         is_decimal_validator("bank balance", bank.balance, True, True)
 
     @classmethod
-    def bank_box_validator(bank_box: BankBoxInputUpdate):
+    def bank_box_validator(cls, bank_box: BankBoxInputUpdate):
         is_uuid_validator("bank box id", bank_box.id)
         is_string_validator("bank box tag", bank_box.tag, 2, 32, True)
         is_string_validator("bank box description", bank_box.description, 0, 128, True)
@@ -179,9 +184,15 @@ class UpdateValidator:
 
 class AccessValidator:
     @classmethod
-    def user_login_validator(login: UserInputLogin):
-        is_username_validator(login.username)
-        is_string_validator("user password", login.password, 8, 255)
+    def user_login_validator(cls, login: UserInputLogin):
+        try:
+            is_username_validator(login.username)
+            is_string_validator("user password", login.password, 8, 255)
+        except GraphQLError as ge:
+            raise HTTPException(
+                status_code=BAD_REQUEST,
+                detail=dict(message=ge.message)
+            )
 
 
 class GetValidator:
@@ -199,7 +210,7 @@ class GetValidator:
         is_string_validator("bank code", bank.code, 2, 64, True)
 
     @classmethod
-    def list_bank_box_validator(bank_box: ListBankBoxInput):
+    def list_bank_box_validator(cls, bank_box: ListBankBoxInput):
         is_integer_validator("bank box limit", bank_box.limit)
         is_integer_validator("bank box offset", bank_box.offset)
         is_uuid_validator("bank box bank id", bank_box.bank_id)

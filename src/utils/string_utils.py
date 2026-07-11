@@ -1,6 +1,4 @@
-from http.client import BAD_REQUEST
-
-from fastapi import HTTPException
+from graphql.error import GraphQLError
 
 
 def is_string_validator(
@@ -13,26 +11,14 @@ def is_string_validator(
     if is_nullable and value is None:
         return value
     elif value is None:
-        raise HTTPException(
-            status_code=BAD_REQUEST,
-            detail=dict(message=f"{name} cannot be nullable"),
-        )
+        raise GraphQLError(message=f"{name} cannot be nullable")
     elif not isinstance(value, str):
-        raise HTTPException(
-            status_code=BAD_REQUEST,
-            detail=dict(message=f"{name} must be a string"),
-        )
+        raise GraphQLError(message=f"{name} must be a string")
 
     len_value = len(value)
 
     if len_value < min_len:
-        raise HTTPException(
-            status_code=BAD_REQUEST,
-            detail=dict(message=f"{name} length must be greater then or equals to {min_len}"),
-        )
+        raise GraphQLError(message=f"{name} length must be greater then or equals to {min_len}")
 
     if len_value > max_len:
-        raise HTTPException(
-            status_code=BAD_REQUEST,
-            detail=dict(message=f"{name} length must be less than or equals to {max_len}"),
-        )
+        raise GraphQLError(message=f"{name} length must be less than or equals to {max_len}")

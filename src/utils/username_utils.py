@@ -1,26 +1,19 @@
-from http.client import BAD_REQUEST
 from re import compile
 
-from fastapi import HTTPException
+from graphql import GraphQLError
 
 
 def is_username_validator(value: str | None, nullable: bool = False) -> None:
     if value is None and nullable:
         return value
     elif value is None:
-        raise HTTPException(
-            status_code=BAD_REQUEST, detail=dict(message="username cannot be nullable")
-        )
+        raise GraphQLError(message="username cannot be nullable")
     elif not isinstance(value, str):
-        raise HTTPException(
-            status_code=BAD_REQUEST, detail=dict(message="username must be valid")
-        )
+        raise GraphQLError(message="username must be valid")
 
     regex = compile(r"^[a-z_][a-z_0-9]{2,63}$")
 
     checker = regex.match(value) is not None
 
     if not checker:
-        raise HTTPException(
-            status_code=BAD_REQUEST, detail=dict(message="username must be valid")
-        )
+        raise GraphQLError(message="username must be valid")
